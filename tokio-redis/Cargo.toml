@@ -10,5 +10,6 @@ opt-level = 1
 overflow-checks = false
 
 [dependencies]
+bytes = "1.5.0"
 mini-redis = "0.4.1"
 tokio = {version = "1", features = ["full"] }
