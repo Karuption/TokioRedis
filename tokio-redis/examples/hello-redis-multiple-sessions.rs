@@ -3,18 +3,20 @@ use mini_redis::{client, Result};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    let mut client = get_session().await;
+    {
+        get_session()
+            .await
+            .set("hello", "world".into())
+            .await
+            .expect("Unable to Set KVP");
+    }
 
-    client
-        .set("hello", "world".into())
-        .await
-        .expect("Unable to Set KVP");
-
-    drop(client);
     for _ in 0..5 {
-        let mut client = get_session().await;
-
-        let result = client.get("hello").await.expect("Unable to get the result");
+        let result = get_session()
+            .await
+            .get("hello")
+            .await
+            .expect("Unable to get the result");
         println!("Got value from the server, {:?}", result);
     }
 
